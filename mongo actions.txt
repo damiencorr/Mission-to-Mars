@@ -1,0 +1,38 @@
+. 'C:\Users\damie\Anaconda3\Scripts\activate' 'C:\Users\damie\Anaconda3\envs\PythonData'
+
+
+mongod
+
+mongo
+
+use practicedb
+
+db
+
+db.zoo.insert({name: 'Cleo', species: 'jaguar', age: 12, hobbies: ['sleeping', 'eating', 'climbing']})
+db.zoo.insert({name: 'Banzai', species: 'fox', age: 1, hobbies: ['sleeping', 'eating', 'playing']})
+db.zoo.insert({name: 'beastie1', species: 'lion', age: 7, hobbies: ['sleeping', 'eating', 'playing','clawing']})
+db.zoo.insert({name: 'beastie2', species: 'tiger', age: 5, hobbies: ['sleeping', 'eating', 'playing','meuling']})
+db.zoo.insert({name: 'beastie3', species: 'bear', age: 1, hobbies: ['sleeping', 'eating', 'playing','honey']})
+
+show collections
+
+db.zoo.find()
+
+Documents can also be deleted or dropped. The syntax to do so follows: 
+db.collectionName.remove({})
+So, if we wanted to remove Cleo from the database, we would update that line of code to:
+db.zoo.remove({name: 'Cleo'})
+We can also empty the collection at once, instead of one document at a time. For example, to empty our pets collection, we would type: 
+db.zoo.remove({})
+Because the inner curly brackets are empty, Mongo will assume that we want everything in our pets collection to be removed.
+Additionally, to remove a collection all together, we would use 
+db.zoo.drop()
+After running that line in the shell, our pets collection will no longer exist at all.
+And to remove the test database, we will use this line of code: 
+db.dropDatabase()
+
+
+use mars_app
+
+
