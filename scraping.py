@@ -26,6 +26,7 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "full_res_images": hemispheres(browser),
         "last_modified": dt.datetime.now()
     }
 
@@ -38,6 +39,7 @@ def mars_news(browser):
     # Scrape Mars News
     # Visit the mars nasa news site
     url = 'https://mars.nasa.gov/news/'
+    print( f'Visiting .... {url}')
     browser.visit(url)
 
     # Optional delay for loading the page
@@ -64,6 +66,7 @@ def featured_image(browser):
 
     # Visit URL
     url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+    print( f'Visiting .... {url}')
     browser.visit(url)
 
     # Find and click the full image button
@@ -107,8 +110,72 @@ def mars_facts():
     df.columns=['Description', 'Mars']
     df.set_index('Description', inplace=True)
     
-    # Convert dataframe into HTML format, add bootstrap
-    return df.to_html()
+    # Convert dataframe into HTML format, adding bootstrap styling classes
+    return df.to_html(classes=["table-bordered", "table-striped", "table-hover"])
+
+# Hemisphere images
+def hemispheres(browser):
+    # Visit URL
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
+    # Parse the html with soup
+    html = browser.html
+    results_soup = soup(html, 'html.parser')
+    # Find the 'a' tags for the result items
+    results_items = results_soup.find_all('a', class_="itemLink")
+
+    # The article page & thuimbs hrefs will be relative, we need the base URL
+    base_url = 'https://astrogeology.usgs.gov'
+
+    # Find each result's thumnail source
+    thumbs_items = results_soup.find_all('img', class_="thumb")
+    thumbs_links = []
+    for thumb in thumbs_items:
+        #print ( thumb.get('src') )
+        thumbs_links.append( thumb.get('src') )
+    thumbs_links
+
+    # Get the hrefs of each result link
+    results_links = []
+    for item in results_items:
+        #print (item.get('href'))
+        results_links.append(item.get('href'))
+
+    # Remove duplicate hrefs
+    results_links = list(dict.fromkeys(results_links))
+    results_links
+    # Visit the links
+    # EXAMPLE - https://astrogeology.usgs.gov/search/map/Mars/Viking/cerberus_enhanced
+    # Initialize list to hold the links & related titles
+    full_res_images = []
+
+    for idx, link in enumerate(results_links):
+    #for link in results_links:
+        print ( f'Visiting .... {base_url}{link}' )
+        browser.visit( f'{base_url}{link}' )
+        # Parse the html with soup
+        html = browser.html
+        article_soup = soup(html, 'html.parser')
+        #print ( article_soup.find('ul').find_all('a')[1].get('href') )
+        #print ( article_soup.find('h2').text )
+        # Create a dictionary for each title & url, then add to the list
+        # Get the first 'a' tag, the image with text SAMPLE, it is sufficiently large for this purpose
+        # The other image is FULL SIZE and multiple megabytes in size, unnecessarily large for this purpose
+        full_res_images.append( 
+            { 
+                'title':article_soup.find('h2').text,
+                #'img_url':article_soup.find('ul').find_all('a')[0].get('href')
+                'img_url':article_soup.find('ul').find('a').get('href'),
+                'thumb_url':f'{base_url}{thumbs_links[idx]}'
+            }
+        )   
+        
+    #print ( full_res_images )
+    print ('Scrape completed successfully!')
+    return full_res_images
+
+
+
 
 #
 # This last block of code tells Flask that our script is complete and ready for action

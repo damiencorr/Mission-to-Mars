@@ -32,8 +32,10 @@ def index():
 def scrape():
    mars = mongo.db.mars
    mars_data = scraping.scrape_all()
+   print(f'Destination mongo mars .... {mars_data}')
    mars.update({}, mars_data, upsert=True)
-   return "Scraping Successful!"
+   #return "Scraping Successful!"
+   return render_template("scraping.html")
 
 # Tell Flask to run
 
