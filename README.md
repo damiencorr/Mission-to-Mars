@@ -9,6 +9,22 @@ Module 10
 - Update the web application and Flask to display the data from the web scrape.
 - Use Bootstrap to style the web app.
 
+## Web app screenshots
+
+- Wide page responsive form
+
+![Wide page responsive form](https://github.com/damiencorr/Mission-to-Mars/blob/master/Mission%20to%20Mars%20-%20wide%20form%20-%20Annotation%202020-08-02%20113213.png)
+
+- Narrow page responsive form
+
+![Narrow page responsive form](https://github.com/damiencorr/Mission-to-Mars/blob/master/Mission%20to%20Mars%20-%20narrow%20form%20-%20Annotation%202020-08-02%20113326.png)
+
+- Scrape page Return to Main Page Button
+
+![Scrape page Return to Main Page Button](https://github.com/damiencorr/Mission-to-Mars/blob/master/Mission%20to%20Mar%20-%20Scrape%20Return%20to%20main%20page%20-%20Annotation%202020-08-02%20130339.png)
+
+
+
 ## Instructions
 - Visit the Mars Hemispheres (Links to an external site.) web site to view the hemisphere images and use DevTools to find the proper elements to scrape.
 
